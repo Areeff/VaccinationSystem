@@ -1,6 +1,7 @@
 package com.example.VaccinationSystem.Service;
 
 import com.example.VaccinationSystem.Dtos.RequestDtos.UpdateEmailIdDto;
+import com.example.VaccinationSystem.Exceptions.UserNotFoundException;
 import com.example.VaccinationSystem.Models.Dose;
 import com.example.VaccinationSystem.Models.User;
 import com.example.VaccinationSystem.Repository.UserRepository;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -16,6 +18,14 @@ public class UserService {
     public User addUser(User user) {
         user=userRepository.save(user);
         return user;
+    }
+
+    public User getUserById(Integer userId) throws UserNotFoundException {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if(userOpt.isEmpty()) {
+            throw new UserNotFoundException("User not found");
+        }
+        return userOpt.get();
     }
 
     public Date getVaccionationDate(Integer userId) {

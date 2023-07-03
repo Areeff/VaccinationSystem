@@ -25,4 +25,8 @@ public class DoseService {
         userRepository.save(user);
         return "Dose given to user sucessfully";
     }
+
+    public Integer countOfAllGivenDoses() {
+        return doseRepository.findAll().size();
+    }
 }
