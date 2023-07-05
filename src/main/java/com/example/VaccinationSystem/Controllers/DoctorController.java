@@ -1,6 +1,5 @@
 package com.example.VaccinationSystem.Controllers;
 
-import com.example.VaccinationSystem.Dtos.RequestDtos.DoctorCentreUpdateRequestDto;
 import com.example.VaccinationSystem.Dtos.RequestDtos.AssociateDoctorDto;
 import com.example.VaccinationSystem.Dtos.RequestDtos.UpdateDoctorWithEmailId;
 import com.example.VaccinationSystem.Dtos.ResponceDto.DoctorDto;
@@ -31,40 +30,20 @@ public class DoctorController {
         }
     }
 
-    @PostMapping("/associateWithDoctor")
-    public ResponseEntity<String> associteDoctor(@RequestBody AssociateDoctorDto associateDoctorDto){
+    @PostMapping("/associateWithCenter")
+    public ResponseEntity<String> associateWithCenter(@RequestBody AssociateDoctorDto associateDoctorDto){
         try{
-            String responce=doctorService.associateDoctor(associateDoctorDto);
-            return new ResponseEntity<>(responce, HttpStatus.OK);
+            String response=doctorService.associateDoctor(associateDoctorDto);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
         }
     }
 
-    @PutMapping("/changeAssociateHospital")
-    public ResponseEntity<String> changeAssociateHospital(@RequestBody DoctorCentreUpdateRequestDto doctorCentreUpdateRequestDto) {
-        try {
-            String result = doctorService.changeAssociateHospital(doctorCentreUpdateRequestDto);
-            return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
-        } catch (Exception re) {
-            return new ResponseEntity<>(re.getMessage(), HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @GetMapping("/basedOnAppointmentCount")
-    public ResponseEntity<List<DoctorDto>> doctorsBasedOnAppointment(@RequestParam Integer appointmentCount) {
-        try {
-            List<DoctorDto> result = doctorService.doctorBasedOnAppointment(appointmentCount);
-            return new ResponseEntity<>(result, HttpStatus.FOUND);
-        } catch (Exception re) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-    }
-
     @GetMapping("/basedOnAgeAndGender")
-    public ResponseEntity<List<DoctorDto>> getAllDoctorsBasedOnAgeAndGenderByCenterId(@RequestParam Integer greaterThenAge, @RequestParam Gender gender) {
+    public ResponseEntity<List<DoctorDto>> getAllDoctorsBasedOnAgeAndGender(@RequestParam Integer greaterThenAge, @RequestParam Gender gender) {
         try {
-            List<DoctorDto> list = doctorService.getAllDoctorsBasedOnAgeAndGenderByCenterId(greaterThenAge, gender);
+            List<DoctorDto> list = doctorService.getAllDoctorsBasedOnAgeAndGender(greaterThenAge, gender);
             return new ResponseEntity<>(list, HttpStatus.FOUND);
         } catch (Exception re) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -76,13 +55,13 @@ public class DoctorController {
         try {
             String ratio = doctorService.getDoctorsRatioOfMaleAndFemale();
             return new ResponseEntity<>(ratio, HttpStatus.FOUND);
-        } catch (Exception re) {
-            return new ResponseEntity<>(re.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
-    @PutMapping("/updateDoctorByEmailId/{oldEmailId}")
-    public ResponseEntity<String> updateDoctorByEmailId(@RequestParam String oldEmailId, @RequestBody UpdateDoctorWithEmailId updateDoctorWithEmailId) {
+    @PutMapping("/updateDoctorDetailsByEmailId")
+    public ResponseEntity<String> updateDoctorDetails(@RequestParam String oldEmailId, @RequestBody UpdateDoctorWithEmailId updateDoctorWithEmailId) {
         try {
             String result = doctorService.updateDoctor(oldEmailId,updateDoctorWithEmailId);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
@@ -99,5 +78,10 @@ public class DoctorController {
         } catch (Exception re) {
             return new ResponseEntity<>(re.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/appointmentsGreaterThan10")
+    public List<Doctor> appointmentsGreaterThanTen(){
+        return doctorService.appointmentsGreaterThanTen();
     }
 }

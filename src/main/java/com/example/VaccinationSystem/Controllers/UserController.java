@@ -1,6 +1,7 @@
 package com.example.VaccinationSystem.Controllers;
 
 import com.example.VaccinationSystem.Dtos.RequestDtos.UpdateEmailIdDto;
+import com.example.VaccinationSystem.Exceptions.UserNotFoundException;
 import com.example.VaccinationSystem.Models.User;
 import com.example.VaccinationSystem.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class UserController {
 
     @PostMapping("/add")
     public User addUser(@RequestBody User user){
+
         return userService.addUser(user);
     }
 
@@ -28,13 +30,14 @@ public class UserController {
         try {
             User user = userService.getUserById(userId);
             return new ResponseEntity<>(user.getName(), HttpStatus.FOUND);
-        } catch (Exception re) {
-            return new ResponseEntity<>(re.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/getVaccinationDate")
     public Date getVaccinationDate(@RequestParam Integer userId){
+
         return userService.getVaccionationDate(userId);
     }
 
@@ -44,7 +47,15 @@ public class UserController {
     }
 
     @GetMapping("/getByEmail/{emailId}")
-    public User getByEmailId(@PathVariable String emailId){
-        return userService.getByEmailId(emailId);
+    public ResponseEntity<User> getByEmailId(@PathVariable String emailId){
+
+        User user;
+        try {
+            user=userService.getByEmailId(emailId);
+            return new ResponseEntity<>(user,HttpStatus.FOUND);
+        }catch (UserNotFoundException e){
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        }
+
     }
 }

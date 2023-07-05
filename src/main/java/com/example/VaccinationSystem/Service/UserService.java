@@ -42,8 +42,11 @@ public class UserService {
         return "Email updated successfully";
     }
 
-    public User getByEmailId(String emailId) {
-        User user=userRepository.findByEmailId(emailId);
-        return user;
+    public User getByEmailId(String emailId) throws UserNotFoundException {
+        Optional<User>userOptional=userRepository.findByEmailId(emailId);
+        if(userOptional.isEmpty()){
+            throw new UserNotFoundException("User not found");
+        }
+        return userOptional.get();
     }
 }
