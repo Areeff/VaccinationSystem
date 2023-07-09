@@ -1,15 +1,23 @@
 **Vaccination Management System**
 This is a Vaccine Management System that is built using REST API and using MVC structure and other Microservices.
-In this project, I have tried to mimic the backend of the Book My Show Application
+
+In this project, I have tried to mimic the backend of the Book My Show Application.
+
 I have made Controllers, Services with their implementation, Repositories, and their model classes also.
+
 The major tech stacks used in the project are SpringBoot, REST APIs, JPA Hibernate, etc.
+
 The MySQL database is used in this project for all the model classes.
 
 **Models**
 User
+
 Dose
+
 Doctor
+
 Appointment
+
 VaccinationCentre
 
 
